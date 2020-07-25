@@ -17,7 +17,7 @@
   "main": "template.js",
   "scripts": {
     "development": "nodemon",
-    "build": "webpack --config webpack --mode=production --config webpack.config.server.js",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
     "start": "NODE_ENV=production node ./dist/server.generated.js"
   },
   "engines": {
@@ -25,7 +25,7 @@
     "npm": "6.14.4"
   },
   "dependencies": {
-    "@hot-loader/react-dom": "16.13.0",
+    "@babel/core": "^7.10.5",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -33,12 +33,11 @@
     "express": "4.17.1",
     "helmet": "^3.23.3",
     "mongodb": "3.5.5",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-hot-loader": "4.12.20"
+    "mongoose": "^5.9.25"
   },
   "devDependencies": {
-    "babel-loader": "8.1.0",
+    "@babel/preset-env": "^7.10.4",
+    "babel-loader": "^8.1.0",
     "nodemon": "2.0.2",
     "webpack": "4.42.1",
     "webpack-cli": "3.3.11",
