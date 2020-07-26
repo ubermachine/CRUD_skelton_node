@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-const crypto = require("crypto");
-
+import crypto from "crypto";
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,16 +13,16 @@ const UserSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, "Email format invalid"],
     required: "Email is required",
   },
-  created: {
-    type: Date,
-    default: Date.now,
-  },
   updated: Date,
   hashed_password: {
     type: String,
     required: "Enter password",
   },
   salt: String,
+  created: {
+    type: Date,
+    default: Date.now,
+  },
 });
 UserSchema.virtual("password")
   .set(function (password) {
@@ -32,8 +31,18 @@ UserSchema.virtual("password")
     this.hashed_password = this.encryptPassword(password);
   })
   .get(function () {
-    return this.password;
+    return this._password;
   });
+
+UserSchema.path("hashed_password").validate(function (v) {
+  if (this._password && this._password.length < 6) {
+    this.invalidate("password", "Password must be atleast 6 characters");
+  }
+  if (this.isNew && !this._password) {
+    this.invalidate("password", "Password is required");
+  }
+}, null);
+
 UserSchema.methods = {
   authenticate: function (plainText) {
     return this.encryptPassword(plainText) === this.hashed_password;
@@ -43,7 +52,7 @@ UserSchema.methods = {
     try {
       return crypto
         .createHmac("sha1", this.salt)
-        .update("password")
+        .update(password)
         .digest("hex");
     } catch (e) {
       return "";
@@ -53,13 +62,4 @@ UserSchema.methods = {
     return Math.round(new Date().valueOf() * Math.random()) + "";
   },
 };
-UserSchema.path("hashed_password").validate(function (v) {
-  if (this._password && this._password.length < 6) {
-    this.invalidate("password", "Password must be atleast 6 characters");
-  }
-  if (this.isNew && !this.password) {
-    this.invalidate("password", "Password is required");
-  }
-}, null);
-
 export default mongoose.model("User", UserSchema);

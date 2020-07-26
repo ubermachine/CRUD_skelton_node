@@ -7,7 +7,7 @@ const create = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "signed Up sucessfully!" });
   } catch (err) {
-    return res.status(400).json({ error: errorHandler.getErrorMessage(err) });
+    return res.status(400).json({ err });
   }
 };
 const list = async (req, res) => {
