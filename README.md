@@ -1,3 +1,5 @@
+Goal is to Create a simple skeleton backend using node express and mongoose-
+
 **The Basic functionality that we will be implementing will be:**
  *1. sign up
  2. auth
