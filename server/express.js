@@ -7,7 +7,8 @@ import compress from "compression";
 
 import Template from "./../template";
 import userRoutes from "./routes/user.routes";
-import {} from "./routes/auth.routes";
+import authRoutes from "./routes/auth.routes";
+
 const app = express();
 
 app.use(bodyParser.json());

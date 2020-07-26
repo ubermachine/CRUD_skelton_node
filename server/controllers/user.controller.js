@@ -1,7 +1,6 @@
-import { User } from "../models/user.model";
-import { extend } from "lodash/extend"; //to be removed
-import errorHandler from "./error.controller";
-
+import User from "../models/user.model";
+import extend from "lodash/extend"; //to be removed
+import errorHandler from "./../helpers/dbErrorHandler";
 const create = async (req, res) => {
   const user = new User(req.body);
   try {
