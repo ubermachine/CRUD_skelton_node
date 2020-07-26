@@ -1,5 +1,5 @@
 import User from "../models/user.model";
-import extend from "lodash/extend"; //to be removed
+//import extend from "lodash/extend"; //to be removed
 import errorHandler from "./../helpers/dbErrorHandler";
 const create = async (req, res) => {
   const user = new User(req.body);
@@ -40,14 +40,13 @@ const update = async (req, res) => {
   try {
     let user = req.profile;
     // updated to ... or object assign to test
-    //user=extend(user,req.body)
-    console.log(req.body, typeof req.body);
-    user = { ...user, ...req.body };
-
+    //user = extend(user, req.body);
+    user = Object.assign(user, req.body);
+    console.log(user);
     user.updated = Date.now();
     await user.save();
     user.hashed_password = undefined;
-    user.profile.salt = undefined;
+    user.salt = undefined;
     res.json(user);
   } catch (err) {
     return res.status("400").json({ error: errorHandler.getErrorMessage(err) });
