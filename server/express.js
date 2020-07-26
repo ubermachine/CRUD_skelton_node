@@ -4,9 +4,10 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
 import compress from "compression";
-import userRoutes from "./routes/user.routes";
-import Template from "./../template";
 
+import Template from "./../template";
+import userRoutes from "./routes/user.routes";
+import {} from "./routes/auth.routes";
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +19,17 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.status(200).send(Template());
 });
+
 app.use("/", userRoutes);
+app.use("/", authRoutes);
+//To Catch unauthorised errors
+app.use((err, req, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    res.status(401).json({ error: err.name + ": " + err.message });
+  } else if (err) {
+    res.status(400).json({ error: err.name + ": " + err.message });
+    console.log(err);
+  }
+});
 
 export default app;
