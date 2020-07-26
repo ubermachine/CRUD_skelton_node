@@ -1,5 +1,5 @@
 /*TO HANDLE VALIDATION ERRORS FROM THE USER MODEL
- including mongoose ones that have error codes*/
+ including mongoose ones that have error codes ,getUniqueErrorMessage function is to handle errors that are caused due to non unique values*/
 const getErrorMessage = (err) => {
   let message = "";
   if (err.code) {
@@ -18,7 +18,7 @@ const getErrorMessage = (err) => {
       }
     }
   }
-  const getErrorMessage = (err) => {
+  const getUniqueErrorMessage = (err) => {
     let output;
     try {
       let fieldName = "";
